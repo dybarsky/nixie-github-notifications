@@ -1,2 +1,2 @@
-rootProject.name = "raspberry pi nixie github"
+rootProject.name = "raspberry-pi-nixie-github"
 rootProject.buildFileName = "build.gradle.kts"

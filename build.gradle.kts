@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	val kotlinVersion = "1.4.21"
+	val kotlinVersion = "1.4.32"
 	kotlin("jvm") version kotlinVersion
 	kotlin("kapt") version kotlinVersion
 	kotlin("plugin.serialization") version kotlinVersion
@@ -9,7 +9,7 @@ plugins {
 }
 
 application {
-	mainClassName = "App"
+	mainClass.set("App")
 }
 
 repositories {
@@ -29,6 +29,7 @@ dependencies {
 	implementation("com.squareup.retrofit2:retrofit:2.9.0")
 	implementation("com.squareup.okhttp3:okhttp:4.9.0")
 	implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
+	implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.1.1")
 }
 
 tasks.withType<KotlinCompile> {

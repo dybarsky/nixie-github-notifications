@@ -3,18 +3,29 @@
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlin.time.ExperimentalTime
-import kotlin.time.seconds
 
 @ExperimentalTime
 fun main(args: Array<String>): Unit =
     runBlocking {
+
+        require(args.size >= 2) { "Pass user and token" }
         val (user, token) = args
+
         val api = Api.create(user, token)
         val nixie = Nixie()
+        var count = 0
+
         while (true) {
-            val count = api.getNotifications().size
-            println(count)
-            nixie.display(digit = count)
-            delay(60.seconds)
+            val current = api.getNotifications().size
+            if (count != current) {
+                count = current
+                nixie.off()
+                delay(delayMicro)
+            }
+            with(nixie) {
+                if (count > 0) display(count) else off()
+            }
+            val delay = if (isWorkingHours()) delayShort else delayLong
+            delay(delay)
         }
     }
