@@ -1,12 +1,10 @@
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.*
 import kotlin.time.ExperimentalTime
 import kotlin.time.milliseconds
 import kotlin.time.minutes
 
 @ExperimentalTime val delayMicro = 100.milliseconds
+@ExperimentalTime val delayMini = 1.minutes
 @ExperimentalTime val delayShort = 5.minutes
 @ExperimentalTime val delayLong = 30.minutes
 

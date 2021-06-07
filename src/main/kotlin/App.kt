@@ -1,7 +1,7 @@
 @file:JvmName("App")
 
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
+import kotlin.coroutines.coroutineContext
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
@@ -13,19 +13,30 @@ fun main(args: Array<String>): Unit =
 
         val api = Api.create(user, token)
         val nixie = Nixie()
-        var count = 0
+        var job: Job? = null
 
         while (true) {
-            val current = api.getNotifications().size
-            if (count != current) {
-                count = current
-                nixie.off()
-                delay(delayMicro)
-            }
-            with(nixie) {
-                if (count > 0) display(count) else off()
+            job?.cancel()
+            job = launch {
+                val current = api.getNotifications().size
+                nixie.show(current)
             }
             val delay = if (isWorkingHours()) delayShort else delayLong
             delay(delay)
         }
     }
+
+@ExperimentalTime
+private suspend fun Nixie.show(count: Int) {
+    if (count == 0) {
+        off()
+        return
+    }
+    // Blinks every delayMini time
+    while (coroutineContext.isActive) {
+        off()
+        delay(delayMicro)
+        display(count)
+        delay(delayMini)
+    }
+}
