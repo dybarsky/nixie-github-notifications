@@ -1,8 +1,12 @@
 @file:JvmName("App")
 
-import kotlinx.coroutines.*
-import kotlin.coroutines.coroutineContext
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlin.time.ExperimentalTime
+
+private const val ERROR = -1
 
 @ExperimentalTime
 fun main(args: Array<String>): Unit =
@@ -18,8 +22,9 @@ fun main(args: Array<String>): Unit =
         while (true) {
             job?.cancel()
             job = launch {
-                val current = api.getNotifications().size
-                nixie.show(current)
+                val data = runCatching { api.getNotifications() }.getOrNull()
+                val count = data?.size ?: ERROR
+                nixie.show(count)
             }
             val delay = if (isWorkingHours()) delayShort else delayLong
             delay(delay)
@@ -28,15 +33,11 @@ fun main(args: Array<String>): Unit =
 
 @ExperimentalTime
 private suspend fun Nixie.show(count: Int) {
-    if (count == 0) {
-        off()
-        return
-    }
-    // Blinks every delayMini time
-    while (coroutineContext.isActive) {
-        off()
-        delay(delayMicro)
-        display(count)
-        delay(delayMini)
+    off()
+    delay(delayMicro)
+    when(count) {
+        0 ->        return
+        ERROR ->    dash()
+        else ->     display(count)
     }
 }

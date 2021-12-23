@@ -53,6 +53,11 @@ class Nixie {
         write(byte)
     }
 
+    suspend fun dash() {
+        val byte = F
+        write(byte)
+    }
+
     private suspend fun write(byte: Int) {
         for (bit in 0 until 8) {
             val output = 0x80 and (byte shl bit)
