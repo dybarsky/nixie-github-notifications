@@ -8,4 +8,6 @@ It  is controlled by SN74HC595N 8-bit shift register.
 The firmare is written in `kotlin` and uses `pi4j-core` java library.  
 It sends SPI signal from Rapberry Pi to hardware device.  
 
+https://www.youtube.com/watch?v=wmR--jTyfpg
+
 <image height="400" src="media/picture.jpg"/>  <image height="400" src="media/schematic.svg"/>
