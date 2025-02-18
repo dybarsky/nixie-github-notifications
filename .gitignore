@@ -20,3 +20,11 @@ build
 tmp
 *.tmp
 *.bak
+
+build
+*.lck
+*.zip
+_autosave*
+.DS_Store
+fp-info-cache
+shake-backups
